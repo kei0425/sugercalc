@@ -14,8 +14,21 @@
   <link rel="stylesheet" href="css/style.css">
 
   <script>
-    ons.ready(function() {
+var showDialog = function(id) {
+  document
+    .getElementById(id)
+    .show();
+};
+
+var hideDialog = function(id) {
+  document
+    .getElementById(id)
+    .hide();
+};
+ons.ready(function() {
 $('#calc').on('click', () => {
+    var total = $('#total').val();
+    var per = $('#per').val() || 100;
     var cal = $("#cal").val();
     var protein = $("#protein").val();
     var lipid = $("#lipid").val();
@@ -23,10 +36,25 @@ $('#calc').on('click', () => {
     var fiber = $("#fiber").val();
     
     var sugercal = Number(cal) - Number(protein) * 4 - Number(lipid) * 9;
-    var suger = sugercal / 4;
+    var suger;
+    if (fiber > 0 && carbohydrate > 0) {
+        suger = carbohydrate - fiber;
+    }
+    else {
+        suger = Math.round(sugercal / 4 * 10) / 10;
+        fiber = carbohydrate - suger;
+        $('#fiber').val(fiber);
+    }
+    
+    if (carbohydrate > 0 && suger > carbohydrate) {
+        showDialog('dialog-1');
+    }
     
     $('#suger').val(suger);
-    ons.notification.alert(`Hello, world cal:${cal} protein:${protein} lipid:${lipid}`);
+    if (total) {
+        var totalsuger = Math.round(suger / per * total * 10) / 10;
+        $('#totalsuger').val(totalsuger);
+    }
 });
 console.log("Onsen UI is ready!");
     });
@@ -71,11 +99,11 @@ console.log("Onsen UI is ready!");
 <ons-dialog id="dialog-1">
   <div style="text-align: center; padding: 10px;">
     <p>
-      This is a dialog.
+      計算値がおかしいですがよくあることです
     <p>
 
     <p>
-      <ons-button onclick="hideDialog('dialog-1')">Close</ons-button>
+      <ons-button onclick="hideDialog('dialog-1')">OK</ons-button>
     </p>
   </div>
 </ons-dialog>
