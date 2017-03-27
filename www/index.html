@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="components/loader.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script>
+    ons.ready(function() {
+$('#calc').on('click', () => {
+    var cal = $("#cal").val();
+    var protein = $("#protein").val();
+    var lipid = $("#lipid").val();
+    var carbohydrate = $("#carbohydrate").val();
+    var fiber = $("#fiber").val();
+    
+    var sugercal = Number(cal) - Number(protein) * 4 - Number(lipid) * 9;
+    var suger = sugercal / 4;
+    
+    $('#suger').val(suger);
+    ons.notification.alert(`Hello, world cal:${cal} protein:${protein} lipid:${lipid}`);
+});
+console.log("Onsen UI is ready!");
+    });
+  </script>
+</head>
+<body>
+<ons-page>  
+    <ons-toolbar>
+        <div class="center">糖質計算機</div>
+    </ons-toolbar>
+    <div style="text-align: center; margin-top: 30px;">
+        <p>
+          <ons-input id="total" type="number" min="0" modifier="material" placeholder="総量" float></ons-input>
+        </p>
+        <p>
+          <ons-input id="per" type="number" min="0" modifier="material" placeholder="100g当たり" float></ons-input>
+        </p>
+        <p>
+          <ons-input id="cal" type="number" min="0" modifier="material" placeholder="カロリー" float></ons-input>kcal
+        </p>
+        <p>
+          <ons-input id="protein" type="number" min="0" modifier="material" placeholder="タンパク質" float></ons-input>g
+        </p>
+        <p>
+          <ons-input id="lipid" type="number" min="0" modifier="material" placeholder="脂質" float></ons-input>g
+        </p>
+        <p>
+          <ons-input id="carbohydrate" type="number" min="0" modifier="material" placeholder="炭水化物" float></ons-input>g
+        </p>
+        <p>
+          <ons-input id="fiber" type="number" min="0" modifier="material" placeholder="食物繊維" float></ons-input>g
+        </p>
+    <ons-button id="calc" modifier="material">計算！</ons-button>
+        <p>
+          <ons-input id="suger" type="number" min="0" modifier="material" placeholder="糖質" float></ons-input>g
+        </p>
+        <p>
+          <ons-input id="totalsuger" type="number" min="0" modifier="material" placeholder="トータル糖質" float></ons-input>g
+        </p>
+    </div>
+</ons-page>  
+<ons-dialog id="dialog-1">
+  <div style="text-align: center; padding: 10px;">
+    <p>
+      This is a dialog.
+    <p>
+
+    <p>
+      <ons-button onclick="hideDialog('dialog-1')">Close</ons-button>
+    </p>
+  </div>
+</ons-dialog>
+</body>
+</html>
