@@ -1,2 +1,5 @@
 /**/
 
+.calc input.text-input: {
+    color: red;
+}

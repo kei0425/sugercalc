@@ -14,18 +14,17 @@
   <link rel="stylesheet" href="css/style.css">
 
   <script>
-var showDialog = function(id) {
-  document
-    .getElementById(id)
-    .show();
+var showDialog = function(id, message) {
+    if (message) {
+        $(`#${id} .message`).text(message);
+    }
+    document.getElementById(id).show();
 };
 
 var hideDialog = function(id) {
-  document
-    .getElementById(id)
-    .hide();
+  document.getElementById(id).hide();
 };
-ons.ready(function() {
+ons.ready(() => {
 $('#calc').on('click', () => {
     var total = $('#total').val();
     var per = $('#per').val() || 100;
@@ -42,12 +41,15 @@ $('#calc').on('click', () => {
     }
     else {
         suger = Math.round(sugercal / 4 * 10) / 10;
-        fiber = carbohydrate - suger;
-        $('#fiber').val(fiber);
+        if (carbohydrate > 0) {
+            fiber = carbohydrate - suger;
+            $('#fiber').val(fiber);
+            $('#fiber').addClass('calc');
+        }
     }
     
-    if (carbohydrate > 0 && suger > carbohydrate) {
-        showDialog('dialog-1');
+    if (suger < 0 || carbohydrate > 0 && suger > carbohydrate) {
+        showDialog('dialog-1', '計算値がおかしいですがよくあることです');
     }
     
     $('#suger').val(suger);
@@ -67,40 +69,40 @@ console.log("Onsen UI is ready!");
     </ons-toolbar>
     <div style="text-align: center; margin-top: 30px;">
         <p>
-          <ons-input id="total" type="number" min="0" modifier="material" placeholder="総量" float></ons-input>
+          <ons-input id="total" type="number" min="0" modifier="material" placeholder="総量" step="0.1" float></ons-input>
         </p>
         <p>
-          <ons-input id="per" type="number" min="0" modifier="material" placeholder="100g当たり" float></ons-input>
+          <ons-input id="per" type="number" min="0" modifier="material" placeholder="100g当たり" step="0.1" float></ons-input>
         </p>
         <p>
-          <ons-input id="cal" type="number" min="0" modifier="material" placeholder="カロリー" float></ons-input>kcal
+          <ons-input id="cal" type="number" min="0" modifier="material" placeholder="カロリー" step="0.1" float></ons-input>kcal
         </p>
         <p>
-          <ons-input id="protein" type="number" min="0" modifier="material" placeholder="タンパク質" float></ons-input>g
+          <ons-input id="protein" type="number" min="0" modifier="material" placeholder="タンパク質" step="0.1" float></ons-input>g
         </p>
         <p>
-          <ons-input id="lipid" type="number" min="0" modifier="material" placeholder="脂質" float></ons-input>g
+          <ons-input id="lipid" type="number" min="0" modifier="material" placeholder="脂質" step="0.1" float></ons-input>g
         </p>
         <p>
-          <ons-input id="carbohydrate" type="number" min="0" modifier="material" placeholder="炭水化物" float></ons-input>g
+          <ons-input id="carbohydrate" type="number" min="0" modifier="material" placeholder="炭水化物" step="0.1" float></ons-input>g
         </p>
         <p>
-          <ons-input id="fiber" type="number" min="0" modifier="material" placeholder="食物繊維" float></ons-input>g
+          <ons-input id="fiber" type="number" min="0" modifier="material" placeholder="食物繊維" step="0.1" float></ons-input>g
         </p>
     <ons-button id="calc" modifier="material">計算！</ons-button>
         <p>
-          <ons-input id="suger" type="number" min="0" modifier="material" placeholder="糖質" float></ons-input>g
+          <ons-input id="suger" type="number" min="0" modifier="material" placeholder="糖質" step="0.1" float></ons-input>g
         </p>
         <p>
-          <ons-input id="totalsuger" type="number" min="0" modifier="material" placeholder="トータル糖質" float></ons-input>g
+          <ons-input id="totalsuger" type="number" min="0" modifier="material" placeholder="トータル糖質" step="0.1" float></ons-input>g
         </p>
     </div>
 </ons-page>  
 <ons-dialog id="dialog-1">
   <div style="text-align: center; padding: 10px;">
-    <p>
-      計算値がおかしいですがよくあることです
-    <p>
+    <p class="message">
+        default message
+    </p>
 
     <p>
       <ons-button onclick="hideDialog('dialog-1')">OK</ons-button>
